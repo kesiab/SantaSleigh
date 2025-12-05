@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- App-style fullscreen on iPad/iPhone -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta charset="UTF-8" />
+  <title>Santa’s 15‑Second Sleigh Ride</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", sans-serif;
+      text-align: center;
+      background: #3ea86b;
+      color: white;
+      padding: 40px;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+    h1 {
+      font-size: 36px;
+      color: #ffcccc;
+      text-shadow: 2px 2px 6px #b30000;
+    }
+    button {
+      font-size: 22px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 15px;
+      background: #ff3333;
+      color: white;
+      box-shadow: 0 0 10px #ff6666;
+    }
+    button:hover {
+      background: #ff6666;
+    }
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    #result {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #fff8dc;
+    }
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      font-size: 1.2rem;
+      opacity: 0.9;
+      animation: fall linear infinite;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10px); }
+      100% { transform: translateY(110vh); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎅 Santa’s 15‑Second Sleigh Ride 🎄</h1>
+    <input id="playerName" placeholder="Enter player's name..." />
+    <button onclick="startTimer()">Start Santa’s Ride</button>
+    <button onclick="stopTimer()">🎄 HIT THE BUZZER 🎄</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    let startTime = 0;
+    let running = false;
+    function startTimer() {
+      const name = document.getElementById("playerName").value.trim();
+      if (!name) {
+        alert("Please enter a name before starting!");
+        return;
+      }
+      running = true;
+      startTime = Date.now();
+      document.getElementById("result").innerHTML = "Santa is flying... ✨";
+    }
+
+    function stopTimer() {
+      if (!running) return;
+      running = false;
+      const name = document.getElementById("playerName").value;
+      const elapsed = (Date.now() - startTime) / 1000;
+      const diff = Math.abs(15 - elapsed).toFixed(2);
+      let message = "";
+      if (diff <= 0.20) message = "🎁 PERFECT LANDING! Santa is proud!";
+      else if (diff <= 1.5) message = "🌲 Sleigh drift! Not bad, " + name + "!";
+      else message = "❄️ Santa got lost in a snowstorm!";
+      document.getElementById("result").innerHTML =
+        `<strong>${name}</strong> hit the buzzer at <strong>${elapsed.toFixed(2)}s</strong><br>${message}`;
+    }
+
+    function createSnowflake() {
+      const snow = document.createElement('div');
+      snow.className = 'snowflake';
+      snow.textContent = '❄';
+      snow.style.left = Math.random() * 100 + 'vw';
+      snow.style.fontSize = (Math.random() * 12 + 10) + 'px';
+      snow.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      document.body.appendChild(snow);
+      setTimeout(() => snow.remove(), 11000);
+    }
+    setInterval(createSnowflake, 200);
+  </script>
+</body>
+</html>
